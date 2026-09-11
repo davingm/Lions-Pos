@@ -6,6 +6,7 @@ target/
 
 # Windows reserved device name artifact
 nul
+src-trash
 
 ### STS ###
 .apt_generatedrd
