@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.github/_pull/*
 
 # Windows reserved device name artifact
 nul
@@ -67,3 +68,7 @@ uploads/**
 # Simpan placeholder supaya folder ikut ke git
 !uploads/avatar/.gitkeep
 !uploads/products/.gitkeep
+
+# Added by cargo
+
+/target
