@@ -67,3 +67,7 @@ uploads/**
 # Simpan placeholder supaya folder ikut ke git
 !uploads/avatar/.gitkeep
 !uploads/products/.gitkeep
+
+# Added by cargo
+
+/target
