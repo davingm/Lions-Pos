@@ -904,6 +904,7 @@ dependencies = [
  "bcrypt",
  "chrono",
  "dotenvy",
+ "http-body-util",
  "jsonwebtoken",
  "serde",
  "serde_json",
