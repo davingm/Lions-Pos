@@ -8,7 +8,7 @@ use uuid::Uuid;
 
 use crate::{
     errors::AppError,
-    middleware::auth::AuthenticatedUser,
+    middleware::auth::OptionalUser,
     models::{
         catalog::ProductRaw,
         order::{
@@ -29,14 +29,14 @@ pub struct OrderFilterQuery {
 
 pub async fn create_order(
     State(state): State<AppState>,
-    user: Option<AuthenticatedUser>,
+    OptionalUser(user): OptionalUser,
     Json(payload): Json<CreateOrderRequest>,
 ) -> Result<Json<StandardResponse<OrderDetailResponse>>, AppError> {
     if payload.items.is_empty() {
         return Err(AppError::BadRequest("Keranjang belanja kosong".to_string()));
     }
 
-    let user_id = user.as_ref().map(|u| u.0.sub.clone());
+    let user_id = user.as_ref().map(|u| u.sub.clone());
     let now = Utc::now().to_rfc3339();
     let order_id = Uuid::new_v4().to_string();
     let order_number = payload

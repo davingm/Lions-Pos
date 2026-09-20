@@ -72,3 +72,34 @@ impl FromRequestParts<AppState> for AuthenticatedUser {
         Ok(AuthenticatedUser(claims))
     }
 }
+
+#[derive(Clone, Debug)]
+pub struct OptionalUser(pub Option<Claims>);
+
+impl FromRequestParts<AppState> for OptionalUser {
+    type Rejection = AppError;
+
+    async fn from_request_parts(
+        parts: &mut Parts,
+        state: &AppState,
+    ) -> Result<Self, Self::Rejection> {
+        let auth_header = match parts
+            .headers
+            .get(header::AUTHORIZATION)
+            .and_then(|h| h.to_str().ok())
+        {
+            Some(h) => h,
+            None => return Ok(OptionalUser(None)),
+        };
+
+        let token = match auth_header.strip_prefix("Bearer ") {
+            Some(t) => t,
+            None => return Ok(OptionalUser(None)),
+        };
+
+        match decode_jwt(token, &state.config.jwt_secret) {
+            Ok(claims) => Ok(OptionalUser(Some(claims))),
+            Err(_) => Ok(OptionalUser(None)),
+        }
+    }
+}
